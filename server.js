@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
+const router = require("./router/auth-router");
 
-
+app.use("/somay",router);
 // using app i am creating a server as well as manage a middle ware as well
 // in app having so many method like get,put,update,delete and so on
 app.get("/",(req,res)=>{ // arrow function handling the request (req) and constructing the response (res)
