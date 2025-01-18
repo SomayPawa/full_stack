@@ -1,6 +1,12 @@
+require('dotenv').config(); // aab main dotenv use ker sakta hu
 const express = require("express");
 const app = express();
 const router = require("./router/auth-router");
+const  connectDb   = require("./utils/db");
+
+
+// now use middle ware because kyoki data main req ker raha hu json wala par vo print nhi ho rha hai that's why
+app.use(express.json()); // aab main aapne application main json use ker sakta hu(use for parsing json data in the request body)
 
 app.use("/somay",router);
 // using app i am creating a server as well as manage a middle ware as well
@@ -18,7 +24,13 @@ app.use("/somay",router);
 // });
 
 // res.send("hello world|"); // send the "hello world" message as the response when the route is accessed
+
+
 const PORT = 5000;
-app.listen(PORT,()=>{
-    console.log(`server is running at PORT number : ${PORT}`);
+
+connectDb().then(()=>{
+    app.listen(PORT,()=>{
+        console.log(`server is running at PORT number : ${PORT}`);
+    });
 });
+
