@@ -1,4 +1,5 @@
 const User = require("../models/user-model");
+const bcrypt = require("bcryptjs");
 const home = async(req,res) => {
     try{
         res.status(200).send("hello babu baccha ye aapka hai home page");
@@ -18,6 +19,11 @@ const register = async(req,res)=>{
         if(userExist){
             return res.status(400).json({msg : "email already exists"});
         }
+        // hash the password
+
+        // const saltRound = 10; // ye kitna complex kerna hai 
+
+        // const hash_password = await bcrypt.hash(password,saltRound);// or 10 bhi direct likh sakte the
 
         await User.create({username,email,phone,password});
 
