@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt  = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
     username : {
@@ -43,8 +44,30 @@ userSchema.pre('save',async function(){
 
 });
 
+
+// json web token
+// jwt we can store only for client side (cookies and local storage) they are issued by th erver during the authentication process and then stored on the client side
+
+userSchema.methods.generateToken = async function(){
+    try{
+        return jwt.sign({
+            userId : this._id.toString(),
+            email:this.email,
+            isAdmin:this.isAdmin,
+        },
+        process.env.JWT_SEC_KEY,{
+            expiresIn:"30d",
+        }
+        );
+    }
+    catch(error){
+        console.error(error);
+    }
+}   
+
 // define the model or the collection name
 
 const User = new mongoose.model("User",userSchema);// first letter capital and without s 
 
 module.exports = User;
+
